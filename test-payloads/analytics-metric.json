@@ -1,0 +1,7 @@
+{
+  "deviceId": "TEST001",
+  "metricType": "CPU_USAGE",
+  "value": 45.5,
+  "unit": "percentage",
+  "description": "CPU utilization metric"
+}

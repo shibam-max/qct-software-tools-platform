@@ -1,0 +1,12 @@
+{
+  "userId": 1,
+  "title": "Device Alert",
+  "message": "Device TEST001 CPU usage is high (45.5%)",
+  "type": "DeviceAlert",
+  "priority": "High",
+  "metadata": {
+    "deviceId": "TEST001",
+    "threshold": 40.0,
+    "currentValue": 45.5
+  }
+}

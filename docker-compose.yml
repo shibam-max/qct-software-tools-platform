@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  # Java Spring Boot Service
+  device-service:
+    build: 
+      context: ./java-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - DATABASE_URL=jdbc:postgresql://postgres:5432/qct_devices
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - qct-network
+
+  # .NET Core Service
+  user-service:
+    build:
+      context: ./dotnet-backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=QCT_Users;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=true;
+    depends_on:
+      - sqlserver
+    networks:
+      - qct-network
+
+  # PostgreSQL for Java service
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=qct_devices
+      - POSTGRES_USER=qct_user
+      - POSTGRES_PASSWORD=qct_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - qct-network
+
+  # SQL Server for .NET service
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - qct-network
+
+  # Redis for caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - qct-network
+
+volumes:
+  postgres_data:
+  sqlserver_data:
+  redis_data:
+
+networks:
+  qct-network:
+    driver: bridge

@@ -1,0 +1,8 @@
+{
+  "deviceId": "TEST001",
+  "oemId": "SAMSUNG",
+  "deviceType": "SMARTPHONE",
+  "configuration": "{\"cpu\": \"Snapdragon 8 Gen 3\", \"ram\": \"16GB\", \"storage\": \"512GB\", \"display\": \"6.8 inch AMOLED\"}",
+  "firmware": "v2.1.0",
+  "status": "ACTIVE"
+}
